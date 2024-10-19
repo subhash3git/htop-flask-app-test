@@ -2,16 +2,21 @@ from flask import Flask
 import os
 import time
 import subprocess
+import logging
 
 app = Flask(__name__)
 
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+
 @app.route('/htop')
 def htop():
+    logging.info("htop endpoint accessed")  # Log when the endpoint is hit
     name = "Subhash Krishna P"
-    username = os.environ.get('USER') or os.environ.get('USERNAME')  # Fallback for os.getlogin()
+    username = os.environ.get('USER') or os.environ.get('USERNAME')
     server_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
     
-    # Get top output
+    # Get top output (may be limited in cloud environments)
     top_output = subprocess.getoutput('top -b -n 1')
     
     return f"""
